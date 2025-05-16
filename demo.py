@@ -65,7 +65,14 @@ def extract_year_regex(x_str):
     return None
 
 def identity_and_extract_year(models):
-    return [{"year": extract_year_regex(model), "model": model} for model in models]
+    # construct object dtype array with two columns
+    # first column = 'subject' and second column = 'body'
+    features = np.empty(shape=(len(models), 2), dtype=object)
+    for i, model in enumerate(models):
+        features[i, 1] = model
+        features[i, 0] = extract_year_regex(model)
+
+    return features
 
 # %%
 from sklearn.preprocessing import FunctionTransformer
