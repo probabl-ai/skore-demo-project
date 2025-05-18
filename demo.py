@@ -25,8 +25,8 @@ from skrub import DropCols
 
 # %%
 dataset = skrub.datasets.fetch_credit_fraud()
-df_target = dataset.baskets
 df_products = dataset.products
+df_target = dataset.baskets
 # %%
 skrub.TableReport(df_products)
 # %%
@@ -114,7 +114,8 @@ def identity_and_extract_mean_year(models):
     # construct object dtype array with two columns
     features = np.empty(shape=(len(models), len(models.columns)+1), dtype=object)
     for i, item in enumerate(models.values):
-        features[i, 0] = np.array([extract_year_regex(x) for x in item]).mean()
+        print(item)
+        features[i, 0] = np.nanmean(np.array([extract_year_regex(x) for x in item]))
     for j, col in enumerate(models.columns):
         for i, val in enumerate(models[col]):
             features[i, j+1] = val
@@ -135,7 +136,7 @@ def count_items(items):
 # Create a ColumnTransformer to apply the extract_year function to the 'model' column
 preprocessor = ColumnTransformer(
     transformers=[
-        ('extract_year', FunctionTransformer(identity_and_extract_mean_year), make_column_selector(pattern="model.{1,2}")),
+        #('extract_year', FunctionTransformer(identity_and_extract_mean_year), make_column_selector(pattern="model.{1,2}")),
         ('count_items', FunctionTransformer(count_items), make_column_selector(pattern="item.{1,2}")),
     ],
     remainder='passthrough'
@@ -159,6 +160,12 @@ comp.metrics.report_metrics(pos_label = 1)
 
 # %% [markdown]
 # DEMO PART 2 - after superior review
+
+# %%
+X, y = df_target[["ID"]], df_target["fraud_flag"]
+X_train, X_test, y_train, y_test = skore.train_test_split(X, y, stratify=y, test_size=0.1)
+X_train.shape, y_train.shape
+# %%
 
 vectorizer = TableVectorizer(
     high_cardinality=MinHashEncoder(),  # encode ["item", "model"]
@@ -185,6 +192,7 @@ agg_joiner = AggJoiner(
 baskets_products = agg_joiner.fit_transform(df_target)
 TableReport(baskets_products)
 
+# %%
 agg_joiner = make_pipeline(
     AggJoiner(
         aux_table=products_transformed,
