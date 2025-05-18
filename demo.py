@@ -162,8 +162,9 @@ comp.metrics.report_metrics(pos_label = 1)
 # DEMO PART 2 - after superior review
 
 # %%
+from sklearn.model_selection import train_test_split
 X, y = df_target[["ID"]], df_target["fraud_flag"]
-X_train, X_test, y_train, y_test = skore.train_test_split(X, y, stratify=y, test_size=0.1)
+X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.1)
 X_train.shape, y_train.shape
 # %%
 
