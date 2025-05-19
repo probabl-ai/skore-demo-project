@@ -33,7 +33,7 @@ products_grouped = df_products.groupby("basket_ID").agg(list)
 # %%
 products_flatten = []
 for col in products_grouped.columns:
-    cols = [f"{col}{idx}" for idx in range(24)]
+    cols = [f"{col}{idx}" for idx in range(10)]
     products_flatten.append(pd.DataFrame(products_grouped[col].to_list(), columns=cols))
 products_flatten = pd.concat(products_flatten, axis=1)
 # line below in skrub docs, but what for?
@@ -104,14 +104,14 @@ def extract_year_regex(x_str):
         if len(extracted) == 1:
             # if several years are found, it might mean that the regex is uncorrect - let's not use it
             return extracted[0]
-    return None
+    return np.nan
 
 def identity_and_extract_mean_year(models):
     # construct object dtype array with two columns
     features = np.empty(shape=(len(models), len(models.columns)+1), dtype=object)
-    for i, item in enumerate(models.values):
-        print(item)
-        features[i, 0] = np.nanmean(np.array([extract_year_regex(x) for x in item]))
+    for i, values in enumerate(models.values):
+        mean_year_models = np.nanmean(np.array([extract_year_regex(x) for x in values]))
+        features[i, 0] = mean_year_models if np.isnan(mean_year_models) else None
     for j, col in enumerate(models.columns):
         for i, val in enumerate(models[col]):
             features[i, j+1] = val
@@ -132,7 +132,7 @@ def count_items(items):
 # Create a ColumnTransformer to apply the extract_year function to the 'model' column
 preprocessor = ColumnTransformer(
     transformers=[
-        #('extract_year', FunctionTransformer(identity_and_extract_mean_year), make_column_selector(pattern="model.{1,2}")),
+        ('extract_year', FunctionTransformer(identity_and_extract_mean_year), make_column_selector(pattern="model.{1,2}")),
         ('count_items', FunctionTransformer(count_items), make_column_selector(pattern="item.{1,2}")),
     ],
     remainder='passthrough'
