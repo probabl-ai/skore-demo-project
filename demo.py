@@ -33,7 +33,7 @@ products_grouped = df_products.groupby("basket_ID").agg(list)
 # %%
 products_flatten = []
 for col in products_grouped.columns:
-    cols = [f"{col}{idx}" for idx in range(10)]
+    cols = [f"{col}{idx}" for idx in range(24)]
     products_flatten.append(pd.DataFrame(products_grouped[col].to_list(), columns=cols))
 products_flatten = pd.concat(products_flatten, axis=1)
 # line below in skrub docs, but what for?
@@ -92,30 +92,8 @@ baseline_report.metrics.report_metrics()
 # %% [markdown]
 # A lot of information is lost in the feature selection step.
 # Let's try to play a bit with the columns and keep some.
-
-# %% [markdown]
-# The column with most information is `model`. 
-# It seems possible to extract the year of the device. 
-# Rationale: we would expect that the newer the device, the more likely it is to be used for fraud.
-# %%
-def extract_year_regex(x_str):
-    if type(x_str) == str:
-        extracted = re.findall(r"(20\d{2})", x_str)
-        if len(extracted) == 1:
-            # if several years are found, it might mean that the regex is uncorrect - let's not use it
-            return extracted[0]
-    return np.nan
-
-def identity_and_extract_mean_year(models):
-    # construct object dtype array with two columns
-    features = np.empty(shape=(len(models), len(models.columns)+1), dtype=object)
-    for i, values in enumerate(models.values):
-        mean_year_models = np.nanmean(np.array([extract_year_regex(x) for x in values]))
-        features[i, 0] = mean_year_models if np.isnan(mean_year_models) else None
-    for j, col in enumerate(models.columns):
-        for i, val in enumerate(models[col]):
-            features[i, j+1] = val
-    return features
+# The first basic idea is to have a look at the number of items. 
+# Rationale : if someone finds a way to fraud, it's more likely to take more items.
 
 # %% 
 # number of items in the basket
@@ -132,7 +110,6 @@ def count_items(items):
 # Create a ColumnTransformer to apply the extract_year function to the 'model' column
 preprocessor = ColumnTransformer(
     transformers=[
-        ('extract_year', FunctionTransformer(identity_and_extract_mean_year), make_column_selector(pattern="model.{1,2}")),
         ('count_items', FunctionTransformer(count_items), make_column_selector(pattern="item.{1,2}")),
     ],
     remainder='passthrough'
