@@ -38,7 +38,6 @@ for col in products_grouped.columns:
 products_flatten = pd.concat(products_flatten, axis=1)
 # line below in skrub docs, but what for?
 # products_flatten.insert(0, "basket_ID", products_grouped.index)
-# %% 
 
 # %%
 # for the sake of this demo, we will use a small subset of the data.
@@ -83,7 +82,7 @@ baseline_report.help()
 
 # %%
 # create project
-project = Project(name="project demo", tenant="Probabl")
+project = Project(name="project demo 2", tenant="Probabl")
 # %%
 project.put("baseline", baseline_report)
 
@@ -93,7 +92,7 @@ baseline_report.metrics.report_metrics()
 # %% [markdown]
 # A lot of information is lost in the feature selection step.
 # Let's try to play a bit with the columns and keep some.
-# %% 
+
 # %% [markdown]
 # The column with most information is `model`. 
 # It seems possible to extract the year of the device. 
@@ -152,8 +151,6 @@ comp = skore.ComparisonReport([baseline_report, baseline_report_2])
 comp.help()
 # %%
 comp.metrics.report_metrics(pos_label = 1)
-# %%
-
 
 # %% [markdown]
 # DEMO PART 2 - after superior review
@@ -164,7 +161,6 @@ X, y = df_target[["ID"]], df_target["fraud_flag"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.1)
 X_train.shape, y_train.shape
 # %%
-
 vectorizer = TableVectorizer(
     high_cardinality=MinHashEncoder(),  # encode ["item", "model"]
     specific_transformers=[
@@ -225,4 +221,4 @@ project.put("agg_joiner", report_agg_joiner)
 
 # %% 
 report_agg_joiner.metrics.report_metrics()
-
+# %%
