@@ -1,24 +1,21 @@
 # %%
-import skore
-import skrub
-from skrub import tabular_learner
-from skore import EstimatorReport
-from skore_remote_project.project.project import Project
-from sklearn.preprocessing import FunctionTransformer
-from sklearn.compose import ColumnTransformer, make_column_selector
 import re
 import numpy as np
 import pandas as pd
-from scipy.stats import loguniform, randint
+
 from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.pipeline import make_pipeline
-from skrub import AggJoiner, TableReport
+from sklearn.preprocessing import FunctionTransformer, OrdinalEncoder
+from sklearn.compose import ColumnTransformer, make_column_selector
+
+
+import skrub
+from skrub import tabular_learner, DropCols, MinHashEncoder, TableVectorizer, AggJoiner, TableReport
 from skrub import _selectors as s
-from sklearn.preprocessing import OrdinalEncoder
 
-from skrub import MinHashEncoder, TableVectorizer
-
-from skrub import DropCols
+import skore
+from skore import EstimatorReport
+from skore_remote_project.project.project import Project
 
 # %% [markdown]
 # Fetch the dataset. We will use the credit fraud dataset from skrub.
