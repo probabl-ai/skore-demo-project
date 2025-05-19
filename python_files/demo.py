@@ -11,7 +11,9 @@ from skore import EstimatorReport
 from skore_hub_project.project.project import Project
 
 # %% [markdown]
-# Fetch the dataset. We will use the credit fraud dataset from skrub.
+# Fetch the dataset. We will use the census dataset from openml.
+# It's a binary classification problem, where the target is whether a person earns more than 50K a year.
+# https://www.openml.org/search?type=data&sort=runs&id=1590&status=active
 
 # %%
 X, y = fetch_openml("adult", version=2, as_frame=True, return_X_y=True)
