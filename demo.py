@@ -15,7 +15,7 @@ from skrub import _selectors as s
 
 import skore
 from skore import EstimatorReport
-from skore_remote_project.project.project import Project
+from skore_hub_project.project.project import Project
 
 # %% [markdown]
 # Fetch the dataset. We will use the credit fraud dataset from skrub.
