@@ -36,7 +36,13 @@ X_train, X_test, y_train, y_test = skore.train_test_split(X, y, random_state=1)
 baseline = tabular_learner('classification')
 baseline
 # %%
-baseline_report = EstimatorReport(baseline, X_train = X_train, y_train=y_train, X_test = X_test, y_test = y_test)
+baseline_report = EstimatorReport(
+    baseline,
+    X_train=X_train,
+    y_train=y_train,
+    X_test=X_test,
+    y_test=y_test,
+)
 baseline_report.help()
 
 # %% 
