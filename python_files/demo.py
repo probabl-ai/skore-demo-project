@@ -12,9 +12,9 @@ from sklearn.datasets import fetch_openml
 
 X, y = fetch_openml("adult", version=2, as_frame=True, return_X_y=True)
 # %%
-from skrub import TableReport
-
-TableReport(X)
+# Let's take a look at the data
+# in real life, we would do a lot more data exploration. 
+X.info()
 # %%
 y.value_counts()
 
@@ -30,9 +30,9 @@ import pandas as pd
 pd.Series(y_encoded).value_counts()
 
 # %%
-import skore
+from sklearn.model_selection import train_test_split
 
-X_train, X_test, y_train, y_test = skore.train_test_split(X, y_encoded, random_state=1)
+X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, random_state=1)
 
 # %% [markdown]
 # Simpler is better.
@@ -86,7 +86,9 @@ tuned_baseline_report = EstimatorReport(
 # %%
 tuned_baseline_report.metrics.report_metrics()
 # %%
-comp = skore.ComparisonReport(
+from skore import ComparisonReport
+
+comp = ComparisonReport(
     {"Baseline Model": baseline_report, "Tuned model": tuned_baseline_report}
 )
 comp.help()
@@ -95,9 +97,9 @@ comp.metrics.report_metrics(pos_label=1, indicator_favorability=True)
 
 # %%
 # create or connect to project
-from skore_hub_project.project.project import Project
+from skore import Project
 
-project = Project(name="project demo - census", tenant="Probabl")
+project = Project("hub://Probabl/project demo - census")
 # %%
 project.put("baseline", baseline_report)
 project.put("tuned_baseline", tuned_baseline_report)
@@ -138,3 +140,18 @@ logistic_report.help()
 logistic_report.metrics.report_metrics()
 # %%
 project.put("logistic", logistic_report)
+
+
+# %% [markdown]
+# # DEMO PART 3 - after business stakeholder review
+# Their request: why is the feature `sex` not important, while intuitevely it should be?
+
+# %%
+chosen_report = project.reports.get(
+    # id
+)
+
+# %% 
+from skrub import TableReport
+
+TableReport(chosen_report.X_train)

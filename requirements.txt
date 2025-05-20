@@ -1,4 +1,4 @@
-skore
+git+https://github.com/probabl-ai/skore.git@search-feature#egg=skore&subdirectory=skore
 skrub
 git+https://github.com/probabl-ai/skore.git@main#egg=skore-hub-project&subdirectory=skore-hub-project
 
