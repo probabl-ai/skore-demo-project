@@ -2,22 +2,16 @@
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import FunctionTransformer, OrdinalEncoder
 from sklearn.compose import ColumnTransformer, make_column_selector
-from sklearn.datasets import fetch_openml
-
-from skrub import tabular_learner, TableReport
-
-import skore
-from skore import EstimatorReport
-from skore_hub_project.project.project import Project
-
 # %% [markdown]
 # Fetch the dataset. We will use the census dataset from openml.  
 # It's a binary classification problem, where the target is whether a person earns more than 50K a year.  
 # https://www.openml.org/search?type=data&sort=runs&id=1590&status=active  
 
 # %%
+from sklearn.datasets import fetch_openml
 X, y = fetch_openml("adult", version=2, as_frame=True, return_X_y=True)
 # %%
+from skrub import TableReport
 TableReport(X)
 # %%
 y.value_counts()
@@ -26,6 +20,7 @@ y.value_counts()
 y = 1*(y == ">50K")
 
 # %%
+import skore
 X_train, X_test, y_train, y_test = skore.train_test_split(X, y, random_state=1)
 
 # %% [markdown]
@@ -33,9 +28,11 @@ X_train, X_test, y_train, y_test = skore.train_test_split(X, y, random_state=1)
 # Let's do a simple baseline.
 
 # %%
+from skrub import tabular_learner
 baseline = tabular_learner('classification')
 baseline
 # %%
+from skore import EstimatorReport
 baseline_report = EstimatorReport(
     baseline,
     X_train=X_train,
@@ -50,6 +47,7 @@ baseline_report.metrics.report_metrics()
 
 # %%
 # create or connect to project
+from skore_hub_project.project.project import Project
 project = Project(name="project demo - census", tenant="Probabl")
 # %%
 project.put("baseline", baseline_report)
