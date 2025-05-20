@@ -1,11 +1,10 @@
-# %%
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import FunctionTransformer, OrdinalEncoder
-from sklearn.compose import ColumnTransformer, make_column_selector
-
 # %% [markdown]
-# Fetch the dataset. We will use the census dataset from openml.
+# # Welcome to the demo of Skore!
+#
+# Let's start by fetching the dataset. We will use the census dataset from openml.
+#
 # It's a binary classification problem, where the target is whether a person earns more than 50K a year.
+#
 # https://www.openml.org/search?type=data&sort=runs&id=1590&status=active
 
 # %%
@@ -20,15 +19,24 @@ TableReport(X)
 y.value_counts()
 
 # %%
-y = 1 * (y == ">50K")
+from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+y_encoded = le.fit_transform(y)
+
+# %%
+import pandas as pd
+
+pd.Series(y_encoded).value_counts()
 
 # %%
 import skore
 
-X_train, X_test, y_train, y_test = skore.train_test_split(X, y, random_state=1)
+X_train, X_test, y_train, y_test = skore.train_test_split(X, y_encoded, random_state=1)
 
 # %% [markdown]
 # Simpler is better.
+#
 # Let's do a simple baseline.
 
 # %%
@@ -81,11 +89,7 @@ tuned_baseline
 
 # %%
 tuned_baseline_report = EstimatorReport(
-    tuned_baseline, 
-    X_train=X_train, 
-    y_train=y_train, 
-    X_test=X_test, 
-    y_test=y_test
+    tuned_baseline, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test
 )
 # %%
 project.put("tuned_baseline", tuned_baseline_report)
@@ -93,14 +97,45 @@ project.put("tuned_baseline", tuned_baseline_report)
 tuned_baseline_report.metrics.report_metrics()
 # %%
 comp = skore.ComparisonReport(
-    {
-        "Baseline Model": baseline_report, 
-        "Tuned model": tuned_baseline_report
-    }
+    {"Baseline Model": baseline_report, "Tuned model": tuned_baseline_report}
 )
 comp.help()
 # %%
-comp.metrics.report_metrics(pos_label=1)
+comp.metrics.report_metrics(pos_label=1, indicator_favorability=True)
 
 # %% [markdown]
-# DEMO PART 2 - after superior review
+# # DEMO PART 2 - after superior review
+#
+# Their request: even more simple baselines: dummy classifier, and a linear model.
+
+# %%
+from sklearn.dummy import DummyClassifier
+
+dummy = DummyClassifier(strategy="most_frequent")
+dummy_report = EstimatorReport(
+    dummy,
+    X_train=X_train,
+    y_train=y_train,
+    X_test=X_test,
+    y_test=y_test,
+)
+dummy_report.help()
+# %%
+dummy_report.metrics.report_metrics()
+# %%
+project.put("dummy", dummy_report)
+# %%
+from sklearn.linear_model import LogisticRegression
+
+logistic_report = EstimatorReport(
+    tabular_learner(LogisticRegression()),
+    X_train=X_train,
+    y_train=y_train,
+    X_test=X_test,
+    y_test=y_test,
+)
+logistic_report.help()
+# %%
+logistic_report.metrics.report_metrics()
+# %%
+project.put("logistic", logistic_report)
