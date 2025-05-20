@@ -50,6 +50,7 @@ baseline_report.metrics.report_metrics()
 from skore_hub_project.project.project import Project
 project = Project(name="project demo - census", tenant="Probabl")
 # %%
+baseline_report = EstimatorReport(baseline, X_train = X_train, y_train=y_train, X_test = X_test, y_test = y_test)
 project.put("baseline", baseline_report)
 
 # %% [markdown]
@@ -58,7 +59,7 @@ project.put("baseline", baseline_report)
 # %%
 from sklearn.model_selection import GridSearchCV
 
-baseline_2 = GridSearchCV(
+tuned_baseline = GridSearchCV(
                 estimator = baseline,
                 param_grid = {
                     "histgradientboostingclassifier__learning_rate":[0.01, 0.1, 0.2],
@@ -70,16 +71,16 @@ baseline_2 = GridSearchCV(
                 refit=True,
                 scoring="neg_log_loss",
             )
-baseline_2
+tuned_baseline
 
 # %%
-baseline_report_2 = EstimatorReport(baseline_2, X_train = X_train, y_train=y_train, X_test = X_test, y_test = y_test)
+tuned_baseline_report = EstimatorReport(tuned_baseline, X_train = X_train, y_train=y_train, X_test = X_test, y_test = y_test)
 # %%
-project.put("baseline_2", baseline_report_2)
+project.put("tuned_baseline", tuned_baseline_report)
 # %%
-baseline_report_2.metrics.report_metrics()
+tuned_baseline_report.metrics.report_metrics()
 # %%
-comp = skore.ComparisonReport([baseline_report, baseline_report_2])
+comp = skore.ComparisonReport([baseline_report, tuned_baseline])
 comp.help()
 # %%
 comp.metrics.report_metrics(pos_label = 1)
