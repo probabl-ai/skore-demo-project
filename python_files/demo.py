@@ -59,14 +59,6 @@ baseline_report.help()
 # %%
 baseline_report.metrics.report_metrics()
 
-# %%
-# create or connect to project
-from skore_hub_project.project.project import Project
-
-project = Project(name="project demo - census", tenant="Probabl")
-# %%
-project.put("baseline", baseline_report)
-
 # %% [markdown]
 # Let's go a bit further in that baseline by optimizing the parameters.
 
@@ -92,8 +84,6 @@ tuned_baseline_report = EstimatorReport(
     tuned_baseline, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test
 )
 # %%
-project.put("tuned_baseline", tuned_baseline_report)
-# %%
 tuned_baseline_report.metrics.report_metrics()
 # %%
 comp = skore.ComparisonReport(
@@ -103,8 +93,17 @@ comp.help()
 # %%
 comp.metrics.report_metrics(pos_label=1, indicator_favorability=True)
 
+# %%
+# create or connect to project
+from skore_hub_project.project.project import Project
+
+project = Project(name="project demo - census", tenant="Probabl")
+# %%
+project.put("baseline", baseline_report)
+project.put("tuned_baseline", tuned_baseline_report)
+
 # %% [markdown]
-# # DEMO PART 2 - after superior review
+# # DEMO PART 2 - after supervisor review
 #
 # Their request: even more simple baselines: dummy classifier, and a linear model.
 
