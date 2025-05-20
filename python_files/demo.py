@@ -92,7 +92,12 @@ project.put("tuned_baseline", tuned_baseline_report)
 # %%
 tuned_baseline_report.metrics.report_metrics()
 # %%
-comp = skore.ComparisonReport([baseline_report, tuned_baseline])
+comp = skore.ComparisonReport(
+    {
+        "Baseline Model": baseline_report, 
+        "Tuned model": tuned_baseline_report
+    }
+)
 comp.help()
 # %%
 comp.metrics.report_metrics(pos_label=1)
