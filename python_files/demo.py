@@ -57,9 +57,6 @@ from skore_hub_project.project.project import Project
 
 project = Project(name="project demo - census", tenant="Probabl")
 # %%
-baseline_report = EstimatorReport(
-    baseline, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test
-)
 project.put("baseline", baseline_report)
 
 # %% [markdown]
@@ -84,7 +81,11 @@ tuned_baseline
 
 # %%
 tuned_baseline_report = EstimatorReport(
-    tuned_baseline, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test
+    tuned_baseline, 
+    X_train=X_train, 
+    y_train=y_train, 
+    X_test=X_test, 
+    y_test=y_test
 )
 # %%
 project.put("tuned_baseline", tuned_baseline_report)
