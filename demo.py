@@ -89,6 +89,7 @@ tuned_baseline_report = EstimatorReport(
 )
 # %%
 tuned_baseline_report.metrics.report_metrics()
+
 # %%
 from skore import ComparisonReport
 
@@ -96,6 +97,7 @@ comp = ComparisonReport(
     {"Baseline Model": baseline_report, "Tuned model": tuned_baseline_report}
 )
 comp.help()
+
 # %%
 comp.metrics.report_metrics(pos_label=1, indicator_favorability=True)
 
