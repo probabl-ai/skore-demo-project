@@ -11,10 +11,13 @@
 from sklearn.datasets import fetch_openml
 
 X, y = fetch_openml("adult", version=2, as_frame=True, return_X_y=True)
-# %%
+
+# %% [markdown]
 # Let's take a look at the data
 # in real life, we would do a lot more data exploration.
+
 X.info()
+
 # %%
 y.value_counts()
 
