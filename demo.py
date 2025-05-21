@@ -104,7 +104,7 @@ comp.metrics.report_metrics(pos_label=1, indicator_favorability=True)
 # %%
 # init for notebook execution
 name = "demo"
-tenant = "UselessAI"
+tenant = "Probabl"
 
 # %% [markdown]
 # cell to be executed only when running the script
