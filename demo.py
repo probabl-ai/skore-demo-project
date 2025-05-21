@@ -13,7 +13,7 @@ from sklearn.datasets import fetch_openml
 X, y = fetch_openml("adult", version=2, as_frame=True, return_X_y=True)
 # %%
 # Let's take a look at the data
-# in real life, we would do a lot more data exploration. 
+# in real life, we would do a lot more data exploration.
 X.info()
 # %%
 y.value_counts()
@@ -150,7 +150,7 @@ project.put("logistic", logistic_report)
 # chosen_report = project.reports.get(id)
 chosen_report = logistic_report
 
-# %% 
+# %%
 from skrub import TableReport
 
 TableReport(chosen_report.X_train)
