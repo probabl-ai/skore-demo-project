@@ -47,6 +47,7 @@ from skrub import tabular_learner
 
 baseline = tabular_learner("classification")
 baseline
+
 # %%
 from skore import EstimatorReport
 
