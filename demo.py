@@ -118,7 +118,7 @@ project.put("tuned_baseline", tuned_baseline_report)
 # %%
 from sklearn.dummy import DummyClassifier
 
-dummy = DummyClassifier(strategy="most_frequent")
+dummy = DummyClassifier(strategy="prior")
 dummy_report = EstimatorReport(
     dummy,
     X_train=X_train,
@@ -157,6 +157,8 @@ project.put("logistic", logistic_report)
 # Their request: why is the feature `sex` not important, while intuitevely it should be?
 
 # %%
+# It is possible to fetch a specific report by id from the project.
+# The id is available in skore-hub interface, along with other metadata. 
 # chosen_report = project.reports.get(id)
 chosen_report = logistic_report
 
