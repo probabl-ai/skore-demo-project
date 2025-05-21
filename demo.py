@@ -102,8 +102,12 @@ comp.help()
 comp.metrics.report_metrics(pos_label=1, indicator_favorability=True)
 
 # %%
-# create or connect to project
-from skore import Project
+# init for notebook execution
+name = "demo"
+tenant = "UselessAI"
+
+# %% [markdown]
+# cell to be executed only when running the script
 import argparse
 
 # Parsing arguments when used as a script
@@ -113,6 +117,10 @@ parser.add_argument('--name', action="store", dest='name', default="demo")
 args = parser.parse_args()
 tenant = args.tenant
 name = args.name
+
+# %%
+# create or connect to project
+from skore import Project
 
 project = Project(f"hub://{tenant}/{name}")
 # %%
