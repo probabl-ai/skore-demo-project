@@ -147,9 +147,8 @@ project.put("logistic", logistic_report)
 # Their request: why is the feature `sex` not important, while intuitevely it should be?
 
 # %%
-chosen_report = project.reports.get(
-    # id
-)
+# chosen_report = project.reports.get(id)
+chosen_report = logistic_report
 
 # %% 
 from skrub import TableReport
