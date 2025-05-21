@@ -1,3 +1,2 @@
-skore
+skore[hub]
 skrub
-skore-hub-project
