@@ -129,8 +129,10 @@ dummy_report = EstimatorReport(
 dummy_report.help()
 # %%
 dummy_report.metrics.report_metrics()
+
 # %%
 project.put("dummy", dummy_report)
+
 # %%
 from sklearn.linear_model import LogisticRegression
 
@@ -142,8 +144,10 @@ logistic_report = EstimatorReport(
     y_test=y_test,
 )
 logistic_report.help()
+
 # %%
 logistic_report.metrics.report_metrics()
+
 # %%
 project.put("logistic", logistic_report)
 
