@@ -102,10 +102,27 @@ comp.help()
 comp.metrics.report_metrics(pos_label=1, indicator_favorability=True)
 
 # %%
+# init for notebook execution
+name = "demo"
+tenant = "Probabl"
+
+# %% [markdown]
+# cell to be executed only when running the script
+import argparse
+
+# Parsing arguments when used as a script
+parser = argparse.ArgumentParser()
+parser.add_argument('--tenant', action="store", dest='tenant', default="Probabl")
+parser.add_argument('--name', action="store", dest='name', default="demo")
+args = parser.parse_args()
+tenant = args.tenant
+name = args.name
+
+# %%
 # create or connect to project
 from skore import Project
 
-project = Project("hub://Probabl/project demo - census")
+project = Project(f"hub://{tenant}/{name}")
 # %%
 project.put("baseline", baseline_report)
 project.put("tuned_baseline", tuned_baseline_report)
