@@ -60,7 +60,7 @@ baseline_report.help()
 baseline_report.metrics.report_metrics()
 
 # %% [markdown]
-# Let's go a bit further in that baseline by optimizing the parameters.
+# Let's go a bit further in that baseline by optimizing the hyperparameters.
 
 # %%
 from sklearn.model_selection import GridSearchCV
