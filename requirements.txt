@@ -1,2 +1,2 @@
-skore[hub]
+skore[hub]>=0.9
 skrub
