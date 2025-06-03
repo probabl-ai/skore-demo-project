@@ -16,6 +16,7 @@ X, y = fetch_openml("adult", version=2, as_frame=True, return_X_y=True)
 # Let's take a look at the data
 # in real life, we would do a lot more data exploration.
 
+# %%
 X.info()
 
 # %%
@@ -74,7 +75,7 @@ tuned_baseline = GridSearchCV(
     param_grid={
         "histgradientboostingclassifier__learning_rate": [0.01, 0.1, 0.2],
         "histgradientboostingclassifier__max_depth": [1, 3, 5],
-        "histgradientboostingclassifier__max_leaf_nodes": [30, 60, 90],
+        "histgradientboostingclassifier__max_leaf_nodes": [30, 60],
     },
     cv=5,
     n_jobs=-1,
@@ -107,16 +108,17 @@ name = "demo"
 tenant = "Probabl"
 
 # %% [markdown]
-# cell to be executed only when running the script
-import argparse
+# cell to be executed only when running the script 
+# 
+import argparse  
 
 # Parsing arguments when used as a script
-parser = argparse.ArgumentParser()
-parser.add_argument('--tenant', action="store", dest='tenant', default="Probabl")
-parser.add_argument('--name', action="store", dest='name', default="demo")
-args = parser.parse_args()
-tenant = args.tenant
-name = args.name
+parser = argparse.ArgumentParser()  
+parser.add_argument('--tenant', action="store", dest='tenant', default="Probabl")  
+parser.add_argument('--name', action="store", dest='name', default="demo")  
+args = parser.parse_args()  
+tenant = args.tenant  
+name = args.name  
 
 # %%
 # create or connect to project
